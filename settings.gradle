@@ -1,0 +1,3 @@
+include ':SnacksHtml'
+include ':app'
+rootProject.name = "HtmlSnacksProject"
