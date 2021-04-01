@@ -56,7 +56,7 @@ workflows:
           filters:
             branches:
               ignore: main
-      - android-test: # Commits to main branch only - run full matrix
+      - android/run-ui-tests: # Commits to main branch only - run full matrix
           matrix:
               alias: android-test-all
               parameters:
@@ -66,9 +66,6 @@ workflows:
                     - system-images;android-28;google_apis;x86
                     - system-images;android-27;google_apis;x86
                     - system-images;android-26;google_apis;x86
-                    - system-images;android-25;google_apis;x86
-                    - system-images;android-24;google_apis;x86
-                    - system-images;android-23;google_apis;x86
           name: android-test-<<matrix.system-image>>
           filters:
             branches:
