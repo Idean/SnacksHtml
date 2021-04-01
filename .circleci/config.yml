@@ -12,7 +12,7 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - android/run-tests:
-          test-command: ./gradlew testDebug
+          test-command: ./gradlew SnacksHtml:testDebug
       - run:
           name: "Save test results"
           command: |
