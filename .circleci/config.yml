@@ -10,8 +10,8 @@ jobs:
       resource-class: xlarge
     steps:
       - checkout
-      - android/restore-gradle-cache
-      - android/restore-build-cache
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - android/run-tests:
           test-command: ./gradlew testDebug
       - run:
@@ -24,8 +24,10 @@ jobs:
           path: ~/test-results
       - store_artifacts:
           path: ~/test-results/junit
-      - android/save-gradle-cache
-      - android/save-build-cache
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
   android-test:
     executor:
