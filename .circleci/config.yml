@@ -15,7 +15,7 @@ jobs:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - android/run-tests:
-          test-command: ./gradlew SnacksHtml:testDebug
+          test-command: ./gradlew SnacksHtml:jacocoTestReport
       - run:
           name: Save test results
           command: |
