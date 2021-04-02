@@ -22,7 +22,6 @@ jobs:
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
-      - run: mvn -f ~/.circleci/project/pom.xml test
       - store_test_results:
           path: ~/test-results
       - store_artifacts:
