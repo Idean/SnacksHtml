@@ -11,8 +11,12 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
       - android/run-tests:
           test-command: ./gradlew SnacksHtml:testDebug
+      - run: mvn test
       - run:
           name: Save test results
           command: |
@@ -23,6 +27,8 @@ jobs:
           path: ~/test-results
       - store_artifacts:
           path: ~/test-results/junit
+      - override:
+        - gradle check jacocoTestReport
       - save_cache:
           paths:
             - ~/.gradle

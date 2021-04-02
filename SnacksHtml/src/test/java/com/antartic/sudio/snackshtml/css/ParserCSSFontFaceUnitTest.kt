@@ -1,5 +1,6 @@
 package com.antartic.sudio.snackshtml.css
 
+import android.os.Build
 import com.antartic.sudio.errors.MalformedCSSException
 import com.antartic.sudio.errors.MissingCSSMandatoryFieldException
 import com.antartic.sudio.utils.css.ParserCSSFontFace
@@ -8,12 +9,14 @@ import org.junit.Test
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 @RunWith(RobolectricTestRunner::class)
 class ParserCSSFontFaceUnitTest {
     private lateinit var parser: ParserCSSFontFace
