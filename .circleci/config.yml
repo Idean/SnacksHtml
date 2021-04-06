@@ -17,7 +17,7 @@ jobs:
       - android/run-tests:
           test-command: ./gradlew SnacksHtml:jacocoTestReport
       - store_test_results:
-          path: $CIRCLE_TEST_REPORTS
+          path: test-results
       - store_artifacts:
           path: $CIRCLE_ARTIFACTS
       - save_cache:
