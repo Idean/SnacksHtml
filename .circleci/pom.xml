@@ -30,7 +30,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.3</version>
+                <version>0.8.6</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -53,7 +53,7 @@
                         </goals>
                         <configuration>
                             <!-- Sets the path to the file which contains the execution data. -->
-                            <dataFile>SnacksHtml/jacoco.exec</dataFile>
+                            <dataFile>SnacksHtml/build/jacoco/testDebugUnitTest.exec</dataFile>
                             <!-- Sets the output directory for the code coverage report. -->
                             <outputDirectory>SnacksHtml/build/coverage-report</outputDirectory>
                         </configuration>
@@ -61,7 +61,7 @@
                 </executions>
                 <configuration>
                     <systemPropertyVariables>
-                        <jacoco-agent.destfile>SnacksHtml/jacoco.exec</jacoco-agent.destfile>
+                        <jacoco-agent.destfile>SnacksHtml/build/jacoco/testDebugUnitTest.exec</jacoco-agent.destfile>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
