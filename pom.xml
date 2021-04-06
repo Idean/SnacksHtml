@@ -70,7 +70,7 @@
                 </executions>
                 <configuration>
                     <systemPropertyVariables>
-                        <jacoco-agent.destfile>SnacksHtml/build/jacoco/testDebugUnitTest.exec</jacoco-agent.destfile>
+                        <jacoco-agent.destfile>/home/circleci/project/target/jacoco.exec</jacoco-agent.destfile>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
