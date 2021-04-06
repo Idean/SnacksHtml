@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.idean.snackshtml</groupId>
-    <artifactId>SnacksHtmlProject</artifactId>
+    <artifactId>SnacksHtml</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -52,25 +52,22 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>merge</id>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
                         <goals>
-                            <goal>merge</goal>
+                            <goal>report</goal>
                         </goals>
                         <configuration>
-                            <fileSets>
-                                <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
-                                    <directory>${project.basedir}</directory>
-                                    <includes>
-                                        <include>**/*.exec</include>
-                                    </includes>
-                                </fileSet>
-                            </fileSets>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <dataFile>${project.buildDir}/jacoco/testDebugUnitTest.exec</dataFile>
+                            <!-- Sets the output directory for the code coverage report. -->
+                            <outputDirectory>${project.buildDir}/coverage-report</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <systemPropertyVariables>
-                        <jacoco-agent.destfile>SnacksHtml/build/jacoco/testDebugUnitTest.exec</jacoco-agent.destfile>
+                        <jacoco-agent.destfile>${project.buildDir}/jacoco/testDebugUnitTest.exec</jacoco-agent.destfile>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
