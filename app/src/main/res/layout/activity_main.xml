@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="40dp" />
 
-            <com.antartic.sudio.snackshtml.SnacksHtml
+            <com.idean.snackshtml.SnacksHtml
                 android:id="@+id/snacksHtml"
                 android:background="#55000000"
                 android:layout_width="match_parent"

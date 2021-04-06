@@ -33,8 +33,10 @@ android {
     testOptions {
         execution 'ANDROID_TEST_ORCHESTRATOR'
         animationsDisabled true
-        unitTests {
-            includeAndroidResources = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
         }
     }
 
