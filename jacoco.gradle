@@ -68,6 +68,7 @@ def setupAndroidReporting() {
         )
         def mainSrc = "$projectDir/src/main/kotlin"
         sourceDirectories.setFrom(files([mainSrc]))
+
         classDirectories.setFrom(files([debugTree]))
         executionData.setFrom(files("$project.buildDir/jacoco/testDebugUnitTest.exec"))
     }
