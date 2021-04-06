@@ -10,10 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="efe3dd04-23ff-4e43-b84b-6c47357a648f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/SnacksHtml/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom_save.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/HtmlSnacksProject.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/SnacksHtml/HtmlSnacksProject.SnacksHtml.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/HtmlSnacksProject.app.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +86,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.SnacksHtml [test]">
+  <component name="RunManager" selected="Android App.app">
     <configuration name="ParserCSSFontFaceUnitTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
       <module name="HtmlSnacksProject.SnacksHtml" />
       <extension name="coverage">
@@ -123,8 +126,8 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
-      <module name="HtmlSnacksProject.app" />
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="SnacksHtmlProject.app" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />
@@ -317,9 +320,9 @@
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
     <state x="532" y="292" width="615" height="490" key="find.popup/0.25.1680.1025@0.25.1680.1025" timestamp="1617699306616" />
-    <state x="505" y="252" width="670" height="676" key="search.everywhere.popup" timestamp="1617701125574">
+    <state x="505" y="252" width="670" height="676" key="search.everywhere.popup" timestamp="1617712872864">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state x="505" y="252" width="670" height="676" key="search.everywhere.popup/0.25.1680.1025@0.25.1680.1025" timestamp="1617701125574" />
+    <state x="505" y="252" width="670" height="676" key="search.everywhere.popup/0.25.1680.1025@0.25.1680.1025" timestamp="1617712872864" />
   </component>
 </project>

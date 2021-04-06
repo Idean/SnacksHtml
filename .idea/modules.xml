@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HtmlSnacksProject.iml" filepath="$PROJECT_DIR$/.idea/modules/HtmlSnacksProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SnacksHtml/HtmlSnacksProject.SnacksHtml.iml" filepath="$PROJECT_DIR$/.idea/modules/SnacksHtml/HtmlSnacksProject.SnacksHtml.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HtmlSnacksProject.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HtmlSnacksProject.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SnacksHtmlProject.iml" filepath="$PROJECT_DIR$/.idea/modules/SnacksHtmlProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SnacksHtml/SnacksHtmlProject.SnacksHtml.iml" filepath="$PROJECT_DIR$/.idea/modules/SnacksHtml/SnacksHtmlProject.SnacksHtml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SnacksHtmlProject.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SnacksHtmlProject.app.iml" />
     </modules>
   </component>
 </project>

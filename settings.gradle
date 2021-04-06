@@ -1,3 +1,3 @@
 include ':SnacksHtml'
 include ':app'
-rootProject.name = "HtmlSnacksProject"
+rootProject.name = "SnacksHtmlProject"
