@@ -20,7 +20,6 @@ jobs:
           name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
-#            cp -r ./SnacksHtml/build/coverage-report/html/  ~/test-results
             cp ./SnacksHtml/build/coverage-report/report.xml  ~/test-results
             find . -type f -regex ".*/build/coverage-report/.*xml" -exec cp {} ~/test-results/junit \;
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit \;
