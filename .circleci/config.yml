@@ -20,9 +20,8 @@ jobs:
           name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/coverage-report/*" -exec cp {} ~/test-results/ \;
-            find . -type f -regex ".*/build/coverage-report/*" -exec cp {} ~/test-results/junit/ \;
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+            find . -type f -regex ".*/build/coverage-report/" -exec cp {} ~/test-results/ \;
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/ \;
           when: always
       - store_test_results:
           path: ~/test-results
