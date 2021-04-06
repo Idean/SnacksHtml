@@ -6,7 +6,7 @@
     <groupId>com.idean</groupId>
     <artifactId>SnacksHtmlProject</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>SnacksHtml</name>
     <url>http://maven.apache.org</url>
