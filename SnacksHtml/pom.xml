@@ -61,7 +61,7 @@
                             <!-- Sets the path to the file which contains the execution data. -->
                             <dataFile>${project.buildDir}/jacoco/testDebugUnitTest.exec</dataFile>
                             <!-- Sets the output directory for the code coverage report. -->
-                            <outputDirectory>${project.buildDir}/coverage-report</outputDirectory>
+                            <outputDirectory>${project.buildDir}/reports/jacoco/jacocoDebugTestReport/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
