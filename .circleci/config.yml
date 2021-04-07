@@ -21,10 +21,10 @@ jobs:
           command: |
             mkdir -p ~/test-results/junit/
             cp -r ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/html  ~/test-results
-            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/.*xml  ~/test-results
+            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/*.xml  ~/test-results
             cp -r ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/html  ~/test-results/junit
-            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/.*xml  ~/test-results/junit
-            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/.*csv  ~/test-results/junit
+            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/*.xml  ~/test-results/junit
+            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/*.csv  ~/test-results/junit
           when: always
       - store_test_results:
           path: ~/test-results
