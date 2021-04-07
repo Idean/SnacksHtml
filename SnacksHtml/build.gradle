@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -33,11 +34,18 @@ android {
     testOptions {
         execution 'ANDROID_TEST_ORCHESTRATOR'
         animationsDisabled true
+        unitTests {
+            includeAndroidResources = true
+        }
         unitTests.all {
             jacoco {
                 includeNoLocationClasses = true
             }
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     compileOptions {
@@ -62,16 +70,21 @@ dependencies {
     // Jsoup html parser
     implementation 'org.jsoup:jsoup:1.13.1'
 
-    // Test truth
+    // Truth
     testImplementation 'com.google.truth:truth:1.1.2'
 
-//    testImplementation 'androidx.arch.core:core-testing:2.1.0'
-
-    // Test Robolectric
-    testImplementation 'org.robolectric:robolectric:4.5.1'
-    testImplementation 'androidx.test:core:1.3.0'
+    // Orchestrator
     androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
-    testImplementation 'junit:junit:4.13.2'
+
+    // Expresso
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // Robolectric
+    testImplementation 'org.robolectric:robolectric:4.5.1'
+    testImplementation 'androidx.test:core:1.3.0'
+    kaptTest 'junit:junit:4.13.2'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:3.8.0'
 }

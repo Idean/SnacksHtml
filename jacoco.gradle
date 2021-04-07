@@ -1,81 +1,127 @@
 apply plugin: 'jacoco'
-
 jacoco {
-    toolVersion = '0.8.6'
+    toolVersion = "0.8.5"
 }
-
-tasks.withType(Test) {
-    ignoreFailures = true
-    // Whether or not classes without source location should be instrumented
-    jacoco.includeNoLocationClasses true
-    jacoco.excludes = ['jdk.internal.*']
-    maxHeapSize = '4g'
-}
-
-private static boolean isAndroidModule(Project project) {
-    boolean isAndroidLibrary = project.plugins.hasPlugin('com.android.library')
-    boolean isAndroidApp = project.plugins.hasPlugin('com.android.application')
-    return isAndroidLibrary || isAndroidApp
-}
-
-afterEvaluate { project ->
-    if (isAndroidModule(project)) setupAndroidReporting()
-    else setupKotlinReporting()
-}
-
-def setupKotlinReporting() {
-    jacocoTestReport {
-        dependsOn test
-        reports {
-            csv.enabled false // change if needed
-            xml {
-                enabled true
-                destination file("${buildDir}/coverage-report/report.xml")
-            }
-            html {
-                enabled true
-                destination file("${buildDir}/coverage-report/html")
-            }
-        }
+project.afterEvaluate {
+    def buildType = "debug"
+    def productFlavor = ""
+    def buildTypes = android.buildTypes.collect { type ->
+        type.name
     }
-}
-
-def setupAndroidReporting() {
-    task jacocoTestReport(
-            type: JacocoReport,
-            dependsOn: ['testDebugUnitTest']
-    ) {
-        dependsOn test
-        reports {
-            csv.enabled false
-            xml {
-                enabled true
-                destination file("${buildDir}/coverage-report/report.xml")
+    def productFlavors = android.productFlavors.collect { flavor ->
+        flavor.name
+    }
+    // When no product flavors defined, use empty
+    if (!productFlavors) productFlavors.add('')
+    productFlavors.each { productFlavorName ->
+        buildTypes.each { buildTypeName ->
+            def sourceName = ""
+            def sourcePath = ""
+            if (!productFlavorName) {
+                sourceName = "${buildTypeName}"
+                sourcePath = sourceName
+            } else {
+                sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
+                sourcePath = "${productFlavorName}/${buildTypeName}"
             }
-            html {
-                enabled true
-                destination file("${buildDir}/coverage-report/html")
+            def testTaskName = "test${sourceName.capitalize()}UnitTest"
+            //println("sourceName: $sourceName")
+            //println("sourcePath: $sourcePath")
+            task "jacoco${sourceName.capitalize()}TestReport"(type: JacocoReport, dependsOn:
+                    [
+                            testTaskName,
+                    ]
+            ) {
+                group = "Reporting"
+                description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
+                def fileFilter = [
+                        //UI non testable
+                        '**/*Adapter.*',
+                        '**/*ViewHolder*.*',
+                        '**/*Fragment*.*',
+                        '**/*BottomSheet*.*',
+                        '**/*Activity*.*',
+                        '**/*Binding.*',
+                        '**/*Navigator*.*',
+                        '**/*NavigatorImpl*.*',
+                        //data non testable
+                        '**/api/*Api*.*',
+                        '**/network/*Network*.*',
+                        '**/R.class',
+                        '**/R',
+                        '**/R$*.class',
+                        //'**/BuildConfig.*',
+                        //'**/BuildConfig',
+                        '**/Manifest*.*',
+                        '**/*$ViewInjector*.*',
+                        '**/*$ViewBinder*.*',
+                        '**/*Module.*', // Modules for Dagger.
+                        '**/*Dagger*.*', // Dagger auto-generated code.
+                        '**/*MembersInjector*.*', // Dagger auto-generated code.
+                        '**/*_Provide*Factory*.*',
+                        //add libraries
+                        'android/**/*.*',
+                        'androidx/**/*.*',
+                        'uk/**/*.*',
+                        'io/**/*.*',
+                        //remove what we don't test
+                        'androidTest/**/*.*',
+                        'test/**/*.*',
+                        '**/injector/**/*.*',
+                        '**/**_ViewBinding**',
+                        '**/*EventType.*',
+                        '**/**Mocked',
+                        '**/*_Factory*.*', //Dagger auto-generated code
+                        '**/*AssistedFactory*.*', //Dagger auto-generated code
+                        '**/*AssistedFactory_Factory*.*', //Dagger auto-generated code
+                        '**/*GeneratedInjector*.*', //Dagger auto-generated code
+                        '**/*MemberInjector*.*', //Dagger auto-generated code
+                        '**/*_HiltModule*.*',  //Dagger auto-generated code
+                        '**/Hilt_*.*',  //Dagger auto-generated code,
+                        'hilt_aggregated_deps/*'  //Dagger auto-generated code
+                ]
+                reports {
+                    xml.enabled = true
+                    html.enabled = true
+                    csv.enabled = true
+                }
+                tasks.withType(Test) {
+                    jacoco.includeNoLocationClasses = true
+                    jacoco.excludes = ['jdk.internal.*']
+                }
+                def kotlinClassesDir = "${buildDir}/tmp/kotlin-classes/${sourceName}/"
+                def javaClassesDir = "${buildDir}/intermediates/javac/${sourceName}/classes/"
+                def javaDebugTree = fileTree(
+                        dir: javaClassesDir,
+                        excludes: fileFilter
+                )
+                def kotlinDebugTree = fileTree(
+                        dir: kotlinClassesDir,
+                        excludes: fileFilter
+                )
+                //println("jacoco javaClassesDir : $javaClassesDir")
+                //println("jacoco kotlinClassesDir : $kotlinClassesDir")
+                // generated classes
+                getClassDirectories().from(files([
+                        javaDebugTree,
+                        kotlinDebugTree
+                ]))
+                // sources
+                getSourceDirectories().from(files([
+                        android.sourceSets.main.java.srcDirs,
+                        "src/main/kotlin"
+                ]))
+                def executionData = "${buildDir}/jacoco/test${sourceName.capitalize()}UnitTest.exec"
+                //println("executionData: $executionData")
+                getExecutionData().from(
+                        files([
+                                fileTree(project.projectDir) {
+                                    setIncludes(["**/**/*.exec", "**/**/*.ec"])
+                                }
+                        ])
+                )
+                //executionData = files("${buildDir}/jacoco/test${productFlavor}${buildType}UnitTest.exec")
             }
         }
-        // Change as needed
-        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-
-        def jacocoIncludes = [
-                '**/com/idean/**'
-        ]
-        def debugTree = fileTree(
-                dir:  "$buildDir/intermediates/javac/debug/classes",
-                includes: jacocoIncludes,
-                excludes: fileFilter
-        ) + fileTree(
-                dir: "$buildDir/tmp/kotlin-classes/debug",
-                includes: jacocoIncludes,
-                excludes: fileFilter
-        )
-        def mainSrc = "$projectDir/src/main/kotlin"
-        sourceDirectories.setFrom(files([mainSrc]))
-
-        classDirectories.setFrom(files([debugTree]))
-        executionData.setFrom(files("$project.buildDir/jacoco/testDebugUnitTest.exec"))
     }
 }

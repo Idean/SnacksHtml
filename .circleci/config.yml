@@ -15,14 +15,16 @@ jobs:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - android/run-tests:
-          test-command: ./gradlew SnacksHtml:jacocoTestReport
+          test-command: ./gradlew SnacksHtml:jacocoDebugTestReport
       - run:
           name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
-            cp -r ./SnacksHtml/build/coverage-report/html  ~/test-results
-            find . -type f -regex ".*/build/coverage-report/.*xml" -exec cp {} ~/test-results/junit \;
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit \;
+            cp -r ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/html  ~/test-results
+            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/.*xml  ~/test-results
+            cp -r ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/html  ~/test-results/junit
+            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/.*xml  ~/test-results/junit
+            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/.*csv  ~/test-results/junit
           when: always
       - store_test_results:
           path: ~/test-results
