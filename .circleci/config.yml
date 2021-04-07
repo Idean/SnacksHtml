@@ -19,11 +19,11 @@ jobs:
       - run:
           name: Save test results
           command: |
+            mkdir -p ~/test-results/coverage/
             mkdir -p ~/test-results/junit/
             mkdir -p ~/artifacts/junit/
             cp -r ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport  ~/artifacts/junit
-            cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/*.xml  ~/test-results/junit
-            find . -type f -regex ".*/build/reports/jacoco/jacocoDebugTestReport/.*xml" -exec cp {} ~/test-results/junit \;
+            find . -type f -regex ".*/build/reports/jacoco/jacocoDebugTestReport/.*xml" -exec cp {} ~/test-results/coverage \;
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit \;
           when: always
       - store_test_results:
