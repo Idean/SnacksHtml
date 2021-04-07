@@ -30,7 +30,7 @@ jobs:
           path: ~/artifacts/junit
       - run: mvn test
       - store_artifacts:
-          path:  "~/home/circleci/project/SnacksHtml/.circleci/"
+          path:  ~/artifacts
       - save_cache:
           paths:
             - ~/.gradle
