@@ -20,13 +20,14 @@ jobs:
           name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
-            cp -r ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/html  ~/test-results/junit
+            mkdir -p ~/artifacts/junit/
+            cp -r ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/html  ~/artifacts/junit
             cp ./SnacksHtml/build/reports/jacoco/jacocoDebugTestReport/*.xml  ~/test-results/junit
           when: always
       - store_test_results:
           path: ~/test-results
       - store_artifacts:
-          path: ~/test-results/junit
+          path: ~/artifacts/junit
       - run: mvn test
       - store_artifacts:
           path:  "~/home/circleci/project/SnacksHtml/.circleci/"
