@@ -92,7 +92,7 @@ class ParserCSSFontFace: AbstractCSSParser() {
     }
 
     @Throws(MissingTypeFaceResourceException::class)
-    private fun getFontFaceFromFont(context: Context, completePath: String): Typeface {
+    fun getFontFaceFromFont(context: Context, completePath: String): Typeface {
         try {
             val assetPos = completePath.indexOf("android_res/") + "android_res/".length
             return Typeface.createFromAsset(context.assets, completePath.substring(assetPos))

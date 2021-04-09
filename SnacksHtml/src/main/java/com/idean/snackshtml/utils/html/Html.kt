@@ -1,4 +1,4 @@
-package com.idean.snackshtml.utils
+package com.idean.snackshtml.utils.html
 //
 //import android.graphics.Typeface
 //import android.text.*

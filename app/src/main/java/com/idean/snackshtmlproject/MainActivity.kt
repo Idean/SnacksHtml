@@ -1,55 +1,48 @@
 package com.idean.snackshtmlproject
 
-import android.graphics.Color
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.webkit.WebView
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.idean.snackshtml.SnacksHtml
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.idean.snackshtml.SnacksHtml
 
 
 class MainActivity : AppCompatActivity() {
     private val snacks: SnacksHtml by lazy { findViewById(R.id.snacksHtml) }
     private val wv: WebView by lazy { findViewById(R.id.webView) }
+
     companion object {
-        private const val VIEW_PORT = "<meta name=\"viewport\" content=\"width=device-width\">"// <style>\"word-wrap: break-word;\"</style>"
         private const val ARTICLE_PATH = "file:///android_asset/css/simple_article.css"
-        private const val HTML_LOAD_ARTICLE =
-            "<head><link rel='stylesheet' type='text/css' href='$ARTICLE_PATH'/></head>"
+        private const val HTML_LOAD_ARTICLE = "<head><link rel='stylesheet' type='text/css' href='$ARTICLE_PATH'/></head>"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val text = "<p><h1 style=\"margin: 50px; text-align:center;\">First <u>test</u></h1>\n<h1>Second test</h1><p>\n<img src=\"https://picsum.photos/id/1/500/500\" alt=\"Koï\" width=\"500\" height=\"600\">"
-        val text2 = //"<h2 style=\"margin: 50px; text-align:center;\">test alexis H2</h2>\n" +
-//                "<h1>test alexis H1test alexis H1test alexis H1test alexis H1</h1>\n" +
-//                "<h2>test alexis H2test alexis H2test alexis H2test alexis H2</h2>\n" +
-//                "<h3>test alexis H3test alexis H3test alexis H3test alexis H3</h3>\n" +
-//                "<h4>test alexis H4test alexis H4test alexis H4test alexis H4test alexis H4</h4>\n" +
-//                "<h5>test alexis H5test alexis H5test alexis H5test alexis H5H5test alexis H5test alexis H5test alexis H5</h5>\n" +
-//                "<h6>test alexis H6test alexis H6test alexis H6test alexis H6H6test alexis H6test alexis H6test alexis H6</h6>\n" +
-//                "<p>test alexis Ptest alexis Ptest alexis Ptest alexis Ptest alexis P</p>\n" +
-                "<h6>test alexis <u>Ptest alexis</u> Ptest alexis Ptest alexis H6</h6>\n"+
-                "  <p>test <strong><u>alexis</u></strong> P</p>\n" +
-                "<p>It's important to sharpen our skills digital communications skills, understand the best ways to present ourselves and the information we're trying to communicate&nbsp;to improve the effectiveness of our communications with both clients and colleagues.</p>\n" +
-                "<p>With a better understanding of when we should use different types of communications, and the best way to get our message across with each of them, we will be in a better position to do our jobs well, be more comfortable with this new normal of working remotely and ready to make the most of every interaction.</p>\n" +
-                "<p><img src=\"https://picsum.photos/id/1/500/500\"></img></p>\n" +
-                "<p>We've assembled some short and targeted training to help you reach the next level in online communications. You can find it here:<a href=\"https://degreed.com/pathway/m90l3krdp6?path=make-an-impact-virtually#/pathway\">https://degreed.com/pathway/m90l3krdp6?path=make-an-impact-virtually#/pathway</a></p>"
+        val rawHtml = "<h1>1. What is <a href=\"https://degreed.com/pathway/m90l3krdp6?path=make-an-impact-virtually#/pathway\">https://degreed.com/pathway/m90l3krdp6?path=make-an-impact-virtually#/pathway</a> </h1>\n" +
+                    "<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\n" +
+                    "<h2>2. What is Lorem Ipsum?</h2>\n" +
+                    "<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>\n" +
+                    "<h3><u>3. What is Lorem Ipsum?</u></h3>\n" +
+                    "<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing</p>\n" +
+                    "<p><img src=\"https://picsum.photos/id/1/500/500\"></img></p>\n" +
+                    "<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, here:<a href=\"https://degreed.com/pathway/m90l3krdp6?path=make-an-impact-virtually#/pathway\">https://degreed.com/pathway/m90l3krdp6?path=make-an-impact-virtually#/pathway</a></p>"
 
-        val html = HTML_LOAD_ARTICLE + text2//VIEW_PORT + HTML_LOAD_ARTICLE + text2
+        val html = HTML_LOAD_ARTICLE + rawHtml
         val result = "<html><body style=\"margin: 0px;padding-top: 0px;\">$html</body></html>"
 
         wv.loadDataWithBaseURL(null, result, "text/html", "UTF-8", null)
-        wv.setBackgroundColor(Color.GREEN)
-        snacks.imageGetter = object: SnacksHtml.ImageGetter {
+
+        snacks.imageGetter = object : SnacksHtml.ImageGetter {
             override fun getImageFromUlr(
                 url: String?,
                 imageView: ImageView,
@@ -82,6 +75,13 @@ class MainActivity : AppCompatActivity() {
                     .into(imageView)
 
             }
+        }
+        snacks.linkCallback = object: SnacksHtml.LinkCallback {
+            override fun onLinkClicked(url: String?) {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(browserIntent)
+            }
+
         }
         snacks.parseHtml(result)
     }

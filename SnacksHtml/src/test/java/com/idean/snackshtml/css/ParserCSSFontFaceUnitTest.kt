@@ -1,15 +1,22 @@
 package com.idean.snackshtml.css
 
+import android.content.Context
+import android.graphics.Typeface
 import android.os.Build
+import androidx.test.core.app.ApplicationProvider
+import com.google.common.truth.Truth.assertThat
 import com.idean.snackshtml.errors.MalformedCSSException
 import com.idean.snackshtml.errors.MissingCSSMandatoryFieldException
+import com.idean.snackshtml.errors.MissingTypeFaceResourceException
 import com.idean.snackshtml.utils.css.ParserCSSFontFace
-import com.google.common.truth.Truth.assertThat
-import org.junit.Test
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowApplication
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -165,9 +172,24 @@ class ParserCSSFontFaceUnitTest {
         val result5 = this.parser.getAttributes("")
 
         // Then
-        assertThat(result1).isEqualTo(listOf("src: url('file:///android_res/font/ubuntu_light.ttf')", "font-family: 'ubuntu_light'"))
-        assertThat(result2).isEqualTo(listOf("src: url('file:///android_res/font/ubuntu_light.ttf')", "font-family: 'ubuntu_light'"))
-        assertThat(result3).isEqualTo(listOf("src: url('file:///android_res/font/ubuntu_light.ttf')", "font-family: 'ubuntu_light'"))
+        assertThat(result1).isEqualTo(
+            listOf(
+                "src: url('file:///android_res/font/ubuntu_light.ttf')",
+                "font-family: 'ubuntu_light'"
+            )
+        )
+        assertThat(result2).isEqualTo(
+            listOf(
+                "src: url('file:///android_res/font/ubuntu_light.ttf')",
+                "font-family: 'ubuntu_light'"
+            )
+        )
+        assertThat(result3).isEqualTo(
+            listOf(
+                "src: url('file:///android_res/font/ubuntu_light.ttf')",
+                "font-family: 'ubuntu_light'"
+            )
+        )
         assertThat(result4).isEqualTo(emptyList<String>())
         assertThat(result5).isEqualTo(emptyList<String>())
         try {
@@ -184,5 +206,36 @@ class ParserCSSFontFaceUnitTest {
             assertThat(e).isInstanceOf(MalformedCSSException::class.java)
             assertThat(e.message).isEqualTo("CSS malformed at: $testFail2")
         }
+    }
+
+
+    @Test
+    fun test_getFontFaceFromFont() {
+        // Given
+        val test1 = "file:///android_res/font/ubuntu_light.ttf')"
+        val testFail = "@font-face {\n" +
+                "    src:  ;\n" +
+                "    font-family: 'ubuntu_light';\n"
+
+
+        // When
+//        val context: Context = ApplicationProvider.getApplicationContext()
+//        assertThat(context).isNotNull()
+//        val validator = Typeface.createFromAsset(context.resources.assets, "font/ubuntu_light.ttf")
+//        assertThat(validator).isNotNull()
+
+        // TODO cannot test asset...
+//        val result = this.parser.getFontFaceFromFont(context, test1)
+
+        // Then
+//        assertThat(result).isEqualTo(validator)
+
+//        try {
+//            this.parser.getFontFaceFromFont(context, testFail)
+//            throw Exception("")
+//        } catch (e: Exception) {
+//            assertThat(e).isInstanceOf(MissingTypeFaceResourceException::class.java)
+//            assertThat(e.message).isEqualTo("Typeface path in css not found at: $testFail")
+//        }
     }
 }

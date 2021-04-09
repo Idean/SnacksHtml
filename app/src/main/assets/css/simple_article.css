@@ -39,6 +39,7 @@ pb {
 h1 {
     font-family: 'milky_nice';
     font-size: 30px;
+    color: blue;
     line-height: 32px;
 }
 
@@ -58,4 +59,12 @@ h4 {
     font-family: 'ubuntu_light';
     font-size: 18px;
     line-height: 30px;
+}
+
+a {
+    color: red;
+}
+
+a:visited {
+    color: pink;
 }

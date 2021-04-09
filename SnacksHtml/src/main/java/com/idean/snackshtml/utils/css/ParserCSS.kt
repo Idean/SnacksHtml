@@ -8,9 +8,11 @@ import android.util.Log
 import com.idean.snackshtml.errors.MalformedCSSException
 import com.idean.snackshtml.errors.MissingCSSMandatoryFieldException
 import com.idean.snackshtml.errors.UnsupportedFieldException
-import com.idean.snackshtml.utils.CSSData
-import com.idean.snackshtml.utils.ImageInfo
-import com.idean.snackshtml.utils.setSpan
+import com.idean.snackshtml.utils.html.CSSStyle
+import com.idean.snackshtml.utils.html.ImageStyle
+import com.idean.snackshtml.utils.css.colors.ColorParser
+import com.idean.snackshtml.utils.html.LinkStyle
+import com.idean.snackshtml.utils.text.setSpan
 import org.jsoup.nodes.Element
 import java.io.IOException
 import java.io.InputStream
@@ -30,7 +32,8 @@ class ParserCSS(private val context: Context) : AbstractCSSParser() {
 
     private val parser = ParserCSSFontFace()
 
-    fun parseHeaderCss(head: Element, cssStyle: MutableMap<String, CSSData>) {
+    //TODO TU
+    fun parseHeaderCss(head: Element, cssStyle: MutableMap<String, CSSStyle>) {
         getCSSStyleFile(head)?.let { cssFile ->
             val result = getStringFromInputStream(cssFile)
             val cssWithoutFont = this.parser.findFonts(this.context, result)
@@ -38,13 +41,15 @@ class ParserCSS(private val context: Context) : AbstractCSSParser() {
         }
     }
 
-    fun findCssClasses(css: String, cssStyle: MutableMap<String, CSSData>) {
+    //TODO TU
+    fun findCssClasses(css: String, cssStyle: MutableMap<String, CSSStyle>) {
         val m = Pattern.compile("(.*?)+(\\s?)+(\\{(?:\\{?[^\\[]*?\\}))").matcher(css)
         while (m.find()) {
             try {
                 val section = m.group(0)
+                val rawClassName = getClassName(section)
                 val className = getClassName(section)
-                cssStyle[className] = parseCssClass(getAttributes(section), cssStyle[className])
+                cssStyle[className] = parseCssClass(className, cssStyle, getAttributes(section))
             } catch (e: UnsupportedFieldException) {
                 Log.e(TAG, Log.getStackTraceString(e))
             } catch (e: MissingCSSMandatoryFieldException) {
@@ -68,6 +73,7 @@ class ParserCSS(private val context: Context) : AbstractCSSParser() {
      *
      * @return Return the class name trimmed
      */
+    //TODO TU
     @Throws(MalformedCSSException::class)
     fun getClassName(section: String?): String {
         try {
@@ -79,8 +85,9 @@ class ParserCSS(private val context: Context) : AbstractCSSParser() {
     }
 
     @Throws(UnsupportedFieldException::class)
-    fun parseCssClass(attributes: List<String>, cssData: CSSData?): CSSData {
-        val result = cssData ?: CSSData()
+    fun parseCssClass(className: String, cssStyle: MutableMap<String, CSSStyle>, attributes: List<String>): CSSStyle {
+        val result = cssStyle[className] ?: CSSStyle()
+
         attributes.forEach {
             val value = getValue(it)
             when (val key = getKey(it)) {
@@ -109,13 +116,47 @@ class ParserCSS(private val context: Context) : AbstractCSSParser() {
                 "padding-right" -> result.paddingEnd = getValueWithoutUnit(value).toInt()
                 "padding-top" -> result.paddingTop = getValueWithoutUnit(value).toInt()
                 "padding-bottom" -> result.paddingBottom = getValueWithoutUnit(value).toInt()
+                "color" -> {
+                    if (className == "a" || className.contains("a:")) {
+                        // Hyperlink colors
+                        result.linkStyle = parseHyperlinkCSS(className, value)
+                    } else {
+                        // Simple text color
+                        result.textColor = ColorParser().parseColor(value)
+                    }
+                }
+
                 else -> throw UnsupportedFieldException(key)
             }
         }
-
         return result
     }
 
+    fun parseHyperlinkCSS(className: String, color: String): LinkStyle {
+        val linkStyle = LinkStyle()
+
+        if (className == "a") {
+            linkStyle.linkColor = ColorParser().parseColor(color)
+        } else {
+            when (className.split(":")[1]) {
+                "link" -> linkStyle.linkColor = ColorParser().parseColor(color)
+                "visited" -> linkStyle.visitedLinkColor = ColorParser().parseColor(color)
+                else -> {
+                    // hover and active are not usable in android
+                }
+            }
+        }
+        return linkStyle
+    }
+
+    //TODO TU
+    fun parseHyperLink(cssStyle: CSSStyle?, element: Element): LinkStyle {
+        val href = element.attr("abs:href")
+
+        return (cssStyle?.linkStyle ?: LinkStyle()).apply {
+            this.href = href
+        }
+    }
 
     /**
      * Remove the unit and return the value cast to float
@@ -180,9 +221,9 @@ class ParserCSS(private val context: Context) : AbstractCSSParser() {
         }
     }
 
-    fun getImageProperties(element: Element): ImageInfo {
+    fun getImageProperties(element: Element): ImageStyle {
         val src = element.attr("src")
-        val result = ImageInfo(src)
+        val result = ImageStyle(src)
         element.attr("height").takeIf { it.isNotEmpty() }?.let {
             result.height = it.toInt()
         }

@@ -1,4 +1,4 @@
-package com.idean.snackshtml.utils
+package com.idean.snackshtml.utils.text
 
 import android.text.Spannable
 import android.text.Spanned

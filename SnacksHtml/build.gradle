@@ -64,9 +64,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
 
-    // [@deprecated] Tag soup
-    implementation group: 'org.ccil.cowan.tagsoup', name: 'tagsoup', version: '1.2'
-
     // Jsoup html parser
     implementation 'org.jsoup:jsoup:1.13.1'
 

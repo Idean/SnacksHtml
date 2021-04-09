@@ -99,5 +99,4 @@ abstract class AbstractCSSParser() {
             throw MissingCSSMandatoryFieldException(value)
         }
     }
-
 }

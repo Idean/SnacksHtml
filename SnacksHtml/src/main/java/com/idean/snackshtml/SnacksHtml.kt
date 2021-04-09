@@ -4,15 +4,14 @@ import android.content.Context
 import android.graphics.Color
 import android.text.Spannable
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.util.Log
-import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
-import com.idean.snackshtml.utils.CSSData
-import com.idean.snackshtml.utils.HtmlJSoup
-import com.idean.snackshtml.utils.ImageInfo
+import androidx.appcompat.widget.AppCompatTextView
+import com.idean.snackshtml.utils.html.CSSStyle
+import com.idean.snackshtml.utils.html.HtmlJSoup
+import com.idean.snackshtml.utils.html.ImageStyle
+import com.idean.snackshtml.utils.views.*
 
 
 /**
@@ -28,9 +27,14 @@ class SnacksHtml @kotlin.jvm.JvmOverloads constructor(
     }
 
     var imageGetter: ImageGetter? = null
+    var linkCallback: LinkCallback? = null
 
     interface ImageGetter {
         fun getImageFromUlr(url: String?, imageView: ImageView, onImageLoaded: (() -> Unit))
+    }
+
+    interface LinkCallback {
+        fun onLinkClicked(url: String?)
     }
 
     init {
@@ -47,12 +51,12 @@ class SnacksHtml @kotlin.jvm.JvmOverloads constructor(
     }
 
 
-    override fun getDrawable(source: String?, info: ImageInfo) {
+    override fun getDrawable(source: String?, info: ImageStyle) {
         val imageView = ImageView(context)
         addView(imageView)
 
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-        imageView.layoutParams = LayoutParams(1080.pixelsToDp(), 1920.pixelsToDp())
+        imageView.layoutParams = LayoutParams(1080.pixelsToDp(context), 1920.pixelsToDp(context))
         imageView.setBackgroundColor(Color.RED)
         this.imageGetter?.getImageFromUlr(source, imageView) {
             val width = getFinalSize(info.width)
@@ -66,45 +70,24 @@ class SnacksHtml @kotlin.jvm.JvmOverloads constructor(
         return when (size) {
             -1 -> LayoutParams.MATCH_PARENT
             -2 -> LayoutParams.WRAP_CONTENT
-            else -> size.pixelsToDp()
+            else -> size.pixelsToDp(context)
         }
     }
     
-    override fun setText(text: Spannable, info: CSSData?) {
-        val textView = TextView(context)
-        textView.text = text
+    override fun setText(spanText: Spannable, info: CSSStyle?) {
+        val textView = AppCompatTextView(context)
+
+        textView.text = spanText
         info?.let { textInfo ->
-            info.spanStyle?.let { span ->
-                textView.text = text.apply { setSpan(span, 0, text.length, 0) }
+            textView.apply {
+                setStyle(spanText, textInfo)
+                setMargin(textInfo)
+                setPadding(textInfo)
+                setLink(textInfo.linkStyle, linkCallback)
             }
-            textView.typeface = info.fontFace
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textInfo.textSize)
-            textView.setTextColor(textInfo.textColor)
-            textView.setLineSpacing(getLineMult(textInfo.textSize, textInfo.lineHeight), 1f)
-
-            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            params.topMargin = textInfo.marginTop.pixelsToDp()
-            params.bottomMargin = textInfo.marginBottom.pixelsToDp()
-            params.marginStart = textInfo.marginStart.pixelsToDp()
-            params.marginEnd = textInfo.marginEnd.pixelsToDp()
-            textView.layoutParams = params
-
-            textView.setPadding(
-                info.paddingStart.pixelsToDp(),
-                info.paddingTop.pixelsToDp(),
-                info.paddingEnd.pixelsToDp(),
-                info.paddingBottom.pixelsToDp()
-            )
         }
+
         addView(textView)
         invalidate()
-    }
-
-    private fun getLineMult(textSize: Float, lineHeight: Float): Float {
-        return lineHeight - textSize
-    }
-
-    private fun Int.pixelsToDp(): Int {
-        return this / (context.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
     }
 }
